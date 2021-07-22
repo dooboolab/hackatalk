@@ -1,6 +1,6 @@
 import {Button, DoobooTheme, useTheme} from 'dooboo-ui';
+import {Platform, SectionList, SectionListData} from 'react-native';
 import React, {FC, ReactElement} from 'react';
-import {SectionList, SectionListData} from 'react-native';
 import {SvgApple, SvgFacebook, SvgGoogle} from '../../utils/Icons';
 import {UseMutationConfig, useMutation} from 'react-relay';
 
@@ -61,6 +61,7 @@ const Settings: FC = () => {
 
   const {user, signOutAsync} = useAuthContext();
   const {theme} = useTheme();
+
   const navigation = useNavigation<MainStackNavigationProps<'Settings'>>();
 
   const [commitNotification] =
@@ -89,6 +90,8 @@ const Settings: FC = () => {
 
   const logout = async (): Promise<void> => {
     if (navigation) {
+      if (Platform.OS === 'web') history.go(0);
+
       AsyncStorage.removeItem('token');
 
       const pushToken = await AsyncStorage.getItem('push_token');
